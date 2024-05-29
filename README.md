@@ -4,7 +4,7 @@ codewave相关脚本
 
 window10 cmd
 ```shell
-win10-cmd: curl -o install-dependency.cmd "https://raw.githubusercontent.com/KEHFAN/cw-scripts/main/install-dependency.cmd" && install-dependency.cmd
+curl -o install-dependency.cmd "https://raw.githubusercontent.com/KEHFAN/cw-scripts/main/install-dependency.cmd" && install-dependency.cmd
 ```
 
 win7 certutil -urlcache -split -f "https://raw.githubusercontent.com/username/repository/branch/path_to_your_script.cmd" my_script.cmd && my_script.cmd
