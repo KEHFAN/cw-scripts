@@ -39,6 +39,7 @@ function traverseDir {
             $pomFileName = [System.IO.Path]::GetFileNameWithoutExtension($fullPath) + ".pom"
             $folderPath = Split-Path $fullPath
             $pomFilePath = Join-Path $folderPath $pomFileName
+            $installBatPath = Join-Path $folderPath "install.bat"
 
             Write-Host $fullPath
 
@@ -58,7 +59,22 @@ function traverseDir {
                     # 回到根目录
                     Set-Location $rootDir
                 }
+            } elseif (Test-Path $installBatPath) {
+                Write-Host "install.bat exists."
+                # 切换目录
+                $rootDir = Get-Location
+                Set-Location $folderPath
+                try{
+                    & .\install.bat
+                } catch {
+                    # 命令异常
+                    Write-Host "Caught:" $_.Exception.Message
+                } finally{
+                    # 回到根目录
+                    Set-Location $rootDir
+                }
             } else {
+                # 检查是否存在install.bat
                 Write-Host "pom does not exist. skip."
             }
         }
