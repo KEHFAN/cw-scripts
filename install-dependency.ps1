@@ -15,48 +15,66 @@ function unzip {
     }
 }
 
-# 循环遍历当前文件所有内容
-foreach ($file in Get-ChildItem -Path . -Recurse) {
+function RemoveDir {
+    param([String]$dir)
+    Get-ChildItem -Path $dir -Recurse | Remove-Item -Force -Recurse
+    Remove-Item -Path $dir -Force -Recurse
+}
 
-    # 是文件夹跳过
-    if($file.PSIsContainer){
-        continue
-    }
+function traverseDir {
+    param($dir)
 
-    # jar文件
-    if($file.Extension -eq ".jar"){
+    # 循环遍历当前文件所有内容
+    foreach ($file in Get-ChildItem -Path $dir -Recurse) {
 
-        $fullPath = $file.FullName
-        $pomFileName = [System.IO.Path]::GetFileNameWithoutExtension($fullPath) + ".pom"
-        $folderPath = Split-Path $fullPath
-        $pomFilePath = Join-Path $folderPath $pomFileName
+        # 是文件夹跳过
+        if($file.PSIsContainer){
+            continue
+        }
 
-        Write-Host $fullPath
+        # jar文件
+        if($file.Extension -eq ".jar"){
 
-        # 判断是否存在*.pom
-        if(Test-Path $pomFilePath){
-            # 存在pom 直接安装依赖
-            $pomFile = Get-Item -Path $pomFilePath
-            Write-Host $pomFile.FullName
-            # 切换目录
-            $rootDir = Get-Location
-            Set-Location $folderPath
-            try{
-                & mvn install:install-file -Dfile="$file" -DpomFile="$pomFile"
-            } catch {
-                # 命令异常
-            } finally{
-                # 回到根目录
-                Set-Location $rootDir
+            $fullPath = $file.FullName
+            $pomFileName = [System.IO.Path]::GetFileNameWithoutExtension($fullPath) + ".pom"
+            $folderPath = Split-Path $fullPath
+            $pomFilePath = Join-Path $folderPath $pomFileName
+
+            Write-Host $fullPath
+
+            # 判断是否存在*.pom
+            if(Test-Path $pomFilePath){
+                # 存在pom 直接安装依赖
+                $pomFile = Get-Item -Path $pomFilePath
+                Write-Host $pomFile.FullName
+                # 切换目录
+                $rootDir = Get-Location
+                Set-Location $folderPath
+                try{
+                    & mvn install:install-file -Dfile="$file" -DpomFile="$pomFile"
+                } catch {
+                    # 命令异常
+                } finally{
+                    # 回到根目录
+                    Set-Location $rootDir
+                }
+            } else {
+                Write-Host "pom does not exist. skip."
             }
-        } else {
-            Write-Host "pom does not exist. skip."
+        }
+        elseif ($file.Extension -eq ".zip") {
+            Write-Host "zip file, unzip $file"
+            unzip -sourceZipFile $file -targetPath "tmp"
+            # 递归调用解压目录
+            traverseDir -dir "tmp"
+
+            # 清空tmp
+            RemoveDir -dir "tmp"
         }
     }
-    elseif ($file.Extension -eq ".zip") {
-        Write-Host "zip file, unzip $file"
-        unzip -sourceZipFile $file -targetPath "tmp"
-    }
 }
+
+traverseDir -dir "."
+
 
 
