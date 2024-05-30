@@ -1,3 +1,12 @@
+
+# 判断解压命令是否存在
+if(Get-Command Expand-Archive -ErrorAction -ErrorAction SilentlyContinue) {
+    Write-Host "Expand-Archive command exists"
+} else {
+    Write-Host "Expand-Archive command does not exist"
+}
+
+
 # 获取当前操作系统名称
 $var1 = (wmic os get Caption /value | Select-String "Caption").ToString() -replace "Caption=",""
 

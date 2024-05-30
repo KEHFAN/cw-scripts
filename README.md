@@ -3,6 +3,12 @@ codewave相关脚本
 
 进入依赖文件夹
 
+# window ps1
+```powershell
+iex(Invoke-WebRequest -Uri "https://gitee.com/KEHFAN_admin/cw-scripts/raw/main/install-dependency.ps1" -UseBasicParsing).Content
+```
+win7下载失败 就手动下载
+
 # window
 1. 打开powershell
 2. 粘贴命令
