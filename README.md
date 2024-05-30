@@ -20,3 +20,6 @@ win7下载失败 就手动下载
 ```shell
 curl -sSfL https://gitee.com/KEHFAN_admin/cw-scripts/raw/main/install-dependency.sh | bash
 ```
+```shell
+curl -sSfL https://raw.githubusercontent.com/KEHFAN/cw-scripts/main/install-dependency.sh | bash
+```
