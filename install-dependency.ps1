@@ -33,6 +33,7 @@ foreach ($file in Get-ChildItem -Path . -Recurse) {
             # 回到根目录
             # 命令失败 不会切回目录，需要获取&命令的结果判断失败与否
             Set-Location $PSScriptRoot
+            Write-Host "current dir : $PSScriptRoot"
         } else {
             Write-Host "pom does not exist. skip."
         }
