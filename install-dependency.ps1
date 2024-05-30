@@ -1,6 +1,6 @@
 
 # 判断解压命令是否存在
-if(Get-Command Expand-Archive -ErrorAction -ErrorAction SilentlyContinue) {
+if(Get-Command Expand-Archive -ErrorAction SilentlyContinue) {
     Write-Host "Expand-Archive command exists"
 } else {
     Write-Host "Expand-Archive command does not exist"

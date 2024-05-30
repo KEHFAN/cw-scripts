@@ -7,6 +7,9 @@ codewave相关脚本
 ```powershell
 iex(Invoke-WebRequest -Uri "https://gitee.com/KEHFAN_admin/cw-scripts/raw/main/install-dependency.ps1" -UseBasicParsing).Content
 ```
+```powershell
+iex(Invoke-WebRequest -Uri "https://raw.githubusercontent.com/KEHFAN/cw-scripts/main/install-dependency.ps1" -UseBasicParsing).Content
+```
 win7下载失败 就手动下载
 
 # window
