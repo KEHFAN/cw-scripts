@@ -24,16 +24,16 @@ foreach ($file in Get-ChildItem -Path . -Recurse) {
             $pomFile = Get-Item -Path $pomFilePath
             Write-Host $pomFile.FullName
             # 切换目录
+            $rootDir = Get-Location
             Set-Location $folderPath
             try{
                 & mvn install:install-file -Dfile="$file" -DpomFile="$pomFile"
             } catch {
-
+                # 命令异常
+            } finally{
+                # 回到根目录
+                Set-Location $rootDir
             }
-            # 回到根目录
-            # 命令失败 不会切回目录，需要获取&命令的结果判断失败与否
-            Set-Location $PSScriptRoot
-            Write-Host "current dir : $PSScriptRoot"
         } else {
             Write-Host "pom does not exist. skip."
         }
