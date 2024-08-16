@@ -90,6 +90,7 @@ Install_Docker(){
 }
 
 Install_Mysql(){
+	echo "skip"
 }
 
 Install_OpenJDK8(){
@@ -106,7 +107,7 @@ Install_OpenJDK8(){
 }
 
 Install_Maven(){
-
+	echo "skip"
 }
 
 Install_Main(){
@@ -124,7 +125,10 @@ Install_Main(){
 	fi
 	
 	if [ "${IS_INSTALL_MYSQL}" = "true" ];then
+		echo "skip"
 	fi
+
+	# echo "IS_INSTALL_DOCKER=${IS_INSTALL_DOCKER}"
 	if [ "${IS_INSTALL_DOCKER}" = "true" ];then
 		Install_Docker
 	fi
