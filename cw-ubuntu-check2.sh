@@ -40,13 +40,36 @@ Set_Repo_Url(){
 						sed -i "s/security.ubuntu.com/${list}/g" /etc/apt/sources.list
 						sed -i "s/archive.ubuntu.com/${list}/g" /etc/apt/sources.list
 
-						# 更新软件列表
-						apt-get update
 						break;
 					fi
 				fi
 			done
 		fi
+	fi
+}
+
+# apt-get安装依赖
+Install_Deb_Pack(){
+	# 更新软件列表
+	apt-get update -y
+
+	# 安装必备依赖
+	debPacks="zip unzip";
+	apt-get install -y $debPacks --force-yes
+}
+
+Install_Docker(){
+	# 检查docker是否存在
+	if [ -f "/usr/bin/docker" ]; then
+		docker -v
+		return
+	fi
+	# 不存在 使用apt-get安装
+	if [ "${PM}" = "apt-get" ]; then
+		apt-get install -y docker.io --force-yes
+
+		# 配置docker镜像源
+
 	fi
 }
 
@@ -56,6 +79,7 @@ Install_Main(){
 
 	if [ "${PM}" = "apt-get" ]; then
 		echo "${PM}"
+		Install_Deb_Pack
 	fi
 }
 
