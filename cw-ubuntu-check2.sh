@@ -81,6 +81,8 @@ Install_Main(){
 		echo "${PM}"
 		Install_Deb_Pack
 	fi
+
+	Install_Docker
 }
 
 
