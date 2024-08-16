@@ -70,8 +70,10 @@ Install_Deb_Pack(){
 	apt-get update -y
 
 	# 安装必备依赖
-	debPacks="zip unzip";
+	debPacks="systemd systemctl zip unzip";
 	apt-get install -y $debPacks --force-yes
+
+	# systemd systemctl 解决System has not been booted with systemd as init system (PID 1). Can't operate.
 }
 
 Install_Docker(){
