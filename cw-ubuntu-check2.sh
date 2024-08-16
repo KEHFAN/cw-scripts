@@ -89,7 +89,8 @@ Install_Docker(){
 	fi
 }
 
-Install_Mysql(){}
+Install_Mysql(){
+}
 
 Install_OpenJDK8(){
 	# 检查jdk是否存在
