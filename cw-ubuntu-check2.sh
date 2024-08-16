@@ -39,6 +39,9 @@ Set_Repo_Url(){
 						sed -i "s/${GET_SOURCES_URL}/${list}/g" /etc/apt/sources.list
 						sed -i "s/security.ubuntu.com/${list}/g" /etc/apt/sources.list
 						sed -i "s/archive.ubuntu.com/${list}/g" /etc/apt/sources.list
+
+						# 更新软件列表
+						apt-get update
 						break;
 					fi
 				fi
