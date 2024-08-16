@@ -206,6 +206,10 @@ while [ ${#} -gt 0 ]; do
 		--containerd)
 			# 指定安装containerd
 			;;
+		-c|--compile)
+			# 支持编译源码包 
+			# 包括前端、后端、前置包含环境检测，并安装所需环境
+			;;
 	esac
 	# 左移列表参数
 	shift 1
