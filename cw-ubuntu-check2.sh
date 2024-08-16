@@ -1,3 +1,8 @@
+# wget -O test.sh https://gitee.com/KEHFAN_admin/cw-scripts/raw/main/cw-ubuntu-check2.sh && sudo bash test.sh
+
+
+
+
 while [ ${#} -gt 0 ]; do
 	case $1 in
 		-u|--user)
