@@ -93,15 +93,18 @@ Set_Docker_Daemon(){
 	else
 		touch /etc/docker/daemon.json
 		cat > /etc/docker/daemon.json << 'EOF'
-			{
-				"registry-mirrors":[
-					"https://reg-mirror.qiniu.com",
-					"https://hub-mirror.c.163.com/",
-				        "https://docker.mirrors.ustc.edu.cn/"
-				]
-			}
+{
+	"registry-mirrors":[
+		"https://reg-mirror.qiniu.com",
+		"https://hub-mirror.c.163.com/",
+		"https://docker.mirrors.ustc.edu.cn/"
+	]
+}
 EOF
 	fi
+
+	systemctl daemon-reload
+	systemctl restart docker
 
 }
 
