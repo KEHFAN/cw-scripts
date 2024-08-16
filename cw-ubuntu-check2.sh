@@ -2,6 +2,22 @@
 # wget -O test.sh https://gitee.com/KEHFAN_admin/cw-scripts/raw/main/cw-ubuntu-check2.sh && sudo bash test.sh
 
 
+# root用户检查
+# Ubuntu 如果非root用户 使用sudo 执行脚本
+if [ $(whoami) != "root" ];then
+	echo "======================================================="
+	echo "检查到当前非root权限"
+
+	IS_UBUNTU=$(cat /etc/issue|grep Ubuntu)
+	
+	if [ "${IS_UBUNTU}" ];then
+		echo "请使用下面命令重新执行"
+		echo "sudo wget -O test.sh https://gitee.com/KEHFAN_admin/cw-scripts/raw/main/cw-ubuntu-check2.sh && bash test.sh"
+	fi
+
+fi
+
+
 Get_Pack_Manager(){
 	# 检查apt-get dpkg 文件是否存在
 	if [ -f "/usr/bin/apt-get" ] && [ -f "/usr/bin/dpkg" ]; then
@@ -73,6 +89,25 @@ Install_Docker(){
 	fi
 }
 
+Install_Mysql(){}
+
+Install_OpenJDK8(){
+	# 检查jdk是否存在
+	if [ -f "/usr/bin/java" ];then
+		java -version
+		return
+	fi
+
+	if [ "${PM}" = "apt-get" ];then
+		apt-get install -y openjdk-8-jdk --force-yes
+	fi
+
+}
+
+Install_Maven(){
+
+}
+
 Install_Main(){
 	Get_Pack_Manager
 	Set_Repo_Url
@@ -81,8 +116,18 @@ Install_Main(){
 		echo "${PM}"
 		Install_Deb_Pack
 	fi
+	
+	# 后续通过命令参数来指定是否要安装下列软件，以便允许用户在不同机器上分别安装
+	if [ "${IS_INSTALL_JDK}" = "true" ];then
+		Install_OpenJDK8
+	fi
+	
+	if [ "${IS_INSTALL_MYSQL}" = "true" ];then
+	fi
+	if [ "${IS_INSTALL_DOCKER}" = "true" ];then
+		Install_Docker
+	fi
 
-	Install_Docker
 }
 
 
@@ -96,7 +141,32 @@ while [ ${#} -gt 0 ]; do
 			# 左移列表参数
 			shift 1
 			;;
+		--mysql)
+			# 指定安装mysql
+			IS_INSTALL_MYSQL="true"
+			;;
+		--docker-mysql)
+			# 指定安装docker版本的mysql
+			;;
+		--jdk)
+			# 指定安装jdk
+			IS_INSTALL_JDK="true"
+			;;
+		--maven)
+			# 指定安装maven
+			;;
+		--docker-nexus3)
+			# 指定安装docker版本的nexus3
+			;;
+		--docker)
+			# 指定安装docker
+			IS_INSTALL_DOCKER="true"
+			;;
+		--containerd)
+			# 指定安装containerd
+			;;
 	esac
+	# 左移列表参数
 	shift 1
 done
 
