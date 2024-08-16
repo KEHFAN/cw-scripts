@@ -23,6 +23,7 @@ Set_Repo_Url(){
 
 Install_Main(){
 	Get_Pack_Manager
+	Set_Repo_Url
 
 	if [ "${PM}" = "apt-get" ]; then
 		echo "${PM}"
