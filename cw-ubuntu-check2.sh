@@ -17,6 +17,18 @@ if [ $(whoami) != "root" ];then
 
 fi
 
+Get_Sys_Info(){
+	
+	SYS_BOOT=$(ps -p 1 -o comm=)
+	if [ "${SYS_BOOT}" != "systemd" ];then
+		# 使用systemctl status docker 管理服务时会报下面的错误
+		# System has not been booted with systemd as init system (PID 1). Can't operate.
+		echo "当前系统不是用systemd管理系统，暂不支持"
+		exit
+	fi
+
+}
+
 
 Get_Pack_Manager(){
 	# 检查apt-get dpkg 文件是否存在
@@ -70,10 +82,9 @@ Install_Deb_Pack(){
 	apt-get update -y
 
 	# 安装必备依赖
-	debPacks="systemd systemctl zip unzip";
+	debPacks="zip unzip";
 	apt-get install -y $debPacks --force-yes
 
-	# systemd systemctl 解决System has not been booted with systemd as init system (PID 1). Can't operate.
 }
 
 Install_Docker(){
@@ -113,6 +124,7 @@ Install_Maven(){
 }
 
 Install_Main(){
+	Get_Sys_Info
 	Get_Pack_Manager
 	Set_Repo_Url
 
