@@ -87,10 +87,29 @@ Install_Deb_Pack(){
 
 }
 
+Set_Docker_Daemon(){
+	if [ -f "/etc/docker/daemon.json" ];then
+		echo ""
+	else
+		touch /etc/docker/daemon.json
+		cat > /etc/docker/daemon.json << 'EOF'
+			{
+				"registry-mirrors":[
+					"https://reg-mirror.qiniu.com",
+					"https://hub-mirror.c.163.com/",
+				        "https://docker.mirrors.ustc.edu.cn/"
+				]
+			}
+EOF
+	fi
+
+}
+
 Install_Docker(){
 	# 检查docker是否存在
 	if [ -f "/usr/bin/docker" ]; then
 		docker -v
+		Set_Docker_Daemon
 		return
 	fi
 	# 不存在 使用apt-get安装
@@ -98,7 +117,7 @@ Install_Docker(){
 		apt-get install -y docker.io --force-yes
 
 		# 配置docker镜像源
-
+		Set_Docker_Daemon
 	fi
 }
 
