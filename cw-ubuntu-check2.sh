@@ -210,6 +210,19 @@ Compile_Source(){
 		[ -e "${file}" ] || continue
 
 		echo ${file}
+		file_name=$(basename "$file" .zip)
+		echo "unzip: $file"
+		mkdir -p "${dependency_dir}/output/$file_name"
+		set +e
+		unzip -qn "$file" -d "${dependency_dir}/output/$file_name"
+
+		for jar_file in $(find "${dependency_dir}/output/$file_name" -iname *.jar -type f | grep -v "__MACOSX"); do
+			dir_name=$(dirname "$jar_file")
+			jar_name=$(basename "$jar_file" .jar)
+
+			echo "find: $jar_name"
+		done
+		set -e
 	done
 }
 
