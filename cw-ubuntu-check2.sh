@@ -226,8 +226,29 @@ Compile_Source(){
 		set -e
 	done
 
+	touch settings.xml
+        cat > settings.xml << 'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <pluginGroups></pluginGroups>
+  <proxies></proxies>
+  <servers></servers>
+  <mirrors>
+    <mirror>
+      <id>aliyunmaven</id>
+      <mirrorOf>*</mirrorOf>
+      <name>阿里云公共仓库</name>
+      <url>https://maven.aliyun.com/repository/public</url>
+    </mirror>
+  </mirrors>
+  <profiles></profiles>
+</settings>
+EOF
+
 	# 执行编译后端源码
-	mvn -f ${dependency_dir}/../pom.xml clean package -DskipTests
+	mvn -f ${dependency_dir}/../pom.xml -s settings.xml clean package -DskipTests
 }
 
 Install_Main(){
