@@ -221,10 +221,13 @@ Compile_Source(){
 			jar_name=$(basename "$jar_file" .jar)
 
 			echo "find: $jar_name"
-			mvn install:install-file -Dmaven.test.skip=true -Dfile="$dir_name/$jar_name".jar -DpomFile="$dir_name/$jar_name".pom
+			mvn install:install-file -Dfile="$dir_name/$jar_name".jar -DpomFile="$dir_name/$jar_name".pom
 		done
 		set -e
 	done
+
+	# 执行编译后端源码
+	mvn -f ${dependency_dir}/../pom.xml clean package -DskipTests
 }
 
 Install_Main(){
