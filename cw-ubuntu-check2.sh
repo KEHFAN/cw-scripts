@@ -221,6 +221,7 @@ Compile_Source(){
 			jar_name=$(basename "$jar_file" .jar)
 
 			echo "find: $jar_name"
+			mvn install:install-file -Dfile="$dir_name/$jar_name".jar -DpomFile="$dir_name/$jar_name".pom
 		done
 		set -e
 	done
