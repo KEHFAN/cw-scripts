@@ -188,6 +188,7 @@ while [ ${#} -gt 0 ]; do
 			;;
 		--docker-mysql)
 			# 指定安装docker版本的mysql
+			# 给出docker命令
 			;;
 		--jdk)
 			# 指定安装jdk
@@ -198,6 +199,7 @@ while [ ${#} -gt 0 ]; do
 			;;
 		--docker-nexus3)
 			# 指定安装docker版本的nexus3
+			# 给出docker命令
 			;;
 		--docker)
 			# 指定安装docker
