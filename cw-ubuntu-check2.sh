@@ -204,30 +204,10 @@ Compile_Source(){
 	# 解压源码到当前目录
 	unzip -qn $1 -d ${zip_name}
 
-	# 处理依赖
 	dependency_dir=$(find ${zip_name} -name "dependency")
-	for file in ${dependency_dir}/*.zip; do
-		[ -e "${file}" ] || continue
 
-		echo ${file}
-		file_name=$(basename "$file" .zip)
-		echo "unzip: $file"
-		mkdir -p "${dependency_dir}/output/$file_name"
-		set +e
-		unzip -qn "$file" -d "${dependency_dir}/output/$file_name"
-
-		for jar_file in $(find "${dependency_dir}/output/$file_name" -iname *.jar -type f | grep -v "__MACOSX"); do
-			dir_name=$(dirname "$jar_file")
-			jar_name=$(basename "$jar_file" .jar)
-
-			echo "find: $jar_name"
-			mvn install:install-file -Dfile="$dir_name/$jar_name".jar -DpomFile="$dir_name/$jar_name".pom
-		done
-		set -e
-	done
-
-	touch settings.xml
-        cat > settings.xml << 'EOF'
+	touch ${dependency_dir}/../settings.xml
+        cat > ${dependency_dir}/../settings.xml << 'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -247,8 +227,29 @@ xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.o
 </settings>
 EOF
 
+	# 处理依赖
+	for file in ${dependency_dir}/*.zip; do
+		[ -e "${file}" ] || continue
+
+		echo ${file}
+		file_name=$(basename "$file" .zip)
+		echo "unzip: $file"
+		mkdir -p "${dependency_dir}/output/$file_name"
+		set +e
+		unzip -qn "$file" -d "${dependency_dir}/output/$file_name"
+
+		for jar_file in $(find "${dependency_dir}/output/$file_name" -iname *.jar -type f | grep -v "__MACOSX"); do
+			dir_name=$(dirname "$jar_file")
+			jar_name=$(basename "$jar_file" .jar)
+
+			echo "find: $jar_name"
+			mvn install:install-file -Dfile="$dir_name/$jar_name".jar -DpomFile="$dir_name/$jar_name".pom -s ${dependency_dir}/../settings.xml
+		done
+		set -e
+	done
+
 	# 执行编译后端源码
-	mvn -f ${dependency_dir}/../pom.xml -s settings.xml clean package -DskipTests
+	mvn -f ${dependency_dir}/../pom.xml -s ${dependency_dir}/../settings.xml clean package -DskipTests
 }
 
 Install_Main(){
