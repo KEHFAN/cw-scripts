@@ -253,8 +253,11 @@ EOF
 
 	# 拷贝产物
 	cp ${dependency_dir}/../target/*.jar .
+	
 
 	echo "===============编译完成，在当前目录执行ls查看jar包==================="
+
+	echo "编译产物为：$(basename$(find ${dependency_dir}/../target -name "*.jar"))"
 }
 
 Install_Main(){
