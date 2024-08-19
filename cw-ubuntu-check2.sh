@@ -135,6 +135,9 @@ Install_Mysql(){
 	if [ "${PM}" = "apt-get" ]; then
 		apt-get install -y mysql-server
 
+		# 初次安装时显示账号密码
+		echo "=================mysql登录信息==================="
+		cat /etc/mysql/debian.cnf
 	fi
 
 	# 启动mysql
