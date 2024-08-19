@@ -128,6 +128,12 @@ Install_Mysql(){
 	echo "skip"
 }
 
+Install_Mysql8(){
+	echo "skip"
+
+	# 检查mysql8是否存在
+}
+
 Install_OpenJDK8(){
 	# 检查jdk是否存在
 	if [ -f "/usr/bin/java" ];then
@@ -164,6 +170,10 @@ Install_Main(){
 		echo "skip"
 	fi
 
+	if [ "${IS_INSTALL_MYSQL8}" = "true" ];then
+		Install_Mysql8
+	fi
+
 	# echo "IS_INSTALL_DOCKER=${IS_INSTALL_DOCKER}"
 	if [ "${IS_INSTALL_DOCKER}" = "true" ];then
 		Install_Docker
@@ -185,6 +195,10 @@ while [ ${#} -gt 0 ]; do
 		--mysql)
 			# 指定安装mysql
 			IS_INSTALL_MYSQL="true"
+			;;
+		--mysql8)
+			# 安装mysql8
+			IS_INSTALL_MYSQL8="true"
 			;;
 		--docker-mysql)
 			# 指定安装docker版本的mysql
