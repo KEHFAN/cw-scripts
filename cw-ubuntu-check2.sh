@@ -175,7 +175,15 @@ Install_OpenJDK8(){
 }
 
 Install_Maven(){
-	echo "skip"
+	if [ -f "/usr/bin/mvn" ];then
+		mvn -v
+		return
+	fi
+
+	if [ "${PM}" = "apt-get" ];then
+		apt-get install -y maven
+
+	fi
 }
 
 Install_Main(){
@@ -191,6 +199,10 @@ Install_Main(){
 	# 后续通过命令参数来指定是否要安装下列软件，以便允许用户在不同机器上分别安装
 	if [ "${IS_INSTALL_JDK}" = "true" ];then
 		Install_OpenJDK8
+	fi
+
+	if [ "${IS_INSTALL_MAVEN}" = "true" ];then
+		Install_Maven
 	fi
 	
 	if [ "${IS_INSTALL_MYSQL}" = "true" ];then
@@ -231,6 +243,7 @@ while [ ${#} -gt 0 ]; do
 			;;
 		--maven)
 			# 指定安装maven
+			IS_INSTALL_MAVEN="true"
 			;;
 		--docker-nexus3)
 			# 指定安装docker版本的nexus3
