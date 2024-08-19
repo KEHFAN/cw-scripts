@@ -82,7 +82,7 @@ Install_Deb_Pack(){
 	apt-get update -y
 
 	# 安装必备依赖
-	debPacks="zip unzip";
+	debPacks="zip unzip net-tools";
 	apt-get install -y $debPacks --force-yes
 
 }
