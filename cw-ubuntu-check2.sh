@@ -189,10 +189,10 @@ Install_Maven(){
 Compile_Source(){
 
 	zip_name=$(basename $1 .zip)
-	rm -rf zip_name
-	mkdir zip_name
+	rm -rf ${zip_name}
+	mkdir ${zip_name}
 	# 解压源码到当前目录
-	unzip -qn $1 -d zip_name
+	unzip -qn $1 -d ${zip_name}
 
 }
 
