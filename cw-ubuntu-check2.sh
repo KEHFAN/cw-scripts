@@ -126,13 +126,37 @@ Install_Docker(){
 
 Install_Mysql(){
 	echo "skip"
+	# 检查mysql是否存在
+	if [ -f "/usr/bin/mysql" ];then
+		mysql --version
+		return
+	fi
+	# 不存在 使用apt-get安装
+	if [ "${PM}" = "apt-get" ]; then
+		apt-get install -y mysql-server
+
+	fi
+
+	# 启动mysql
+	#systemctl start mysql
+	# 设置开机自启
+	#systemctl enable mysql
+	# 检查mysql状态
+	#systemctl status mysql
+
+	# 提示信息
+	# 登录mysql 
+	# mysql -uroot -p
+	# 设置密码 mysql8.0
+	# alter user 'root'@'localhost' identified with mysql_native_password by '新密码';
+	# 设置密码 mysql5.7
+	# set password=password('新密码');
+	# 配置ip 5.7
+	# grant all privileges on *.* to root@"%" identified by "密码";
+	# 刷新缓存
+	# flush privileges;
 }
 
-Install_Mysql8(){
-	echo "skip"
-
-	# 检查mysql8是否存在
-}
 
 Install_OpenJDK8(){
 	# 检查jdk是否存在
@@ -167,12 +191,10 @@ Install_Main(){
 	fi
 	
 	if [ "${IS_INSTALL_MYSQL}" = "true" ];then
-		echo "skip"
+		
+		Install_Mysql
 	fi
 
-	if [ "${IS_INSTALL_MYSQL8}" = "true" ];then
-		Install_Mysql8
-	fi
 
 	# echo "IS_INSTALL_DOCKER=${IS_INSTALL_DOCKER}"
 	if [ "${IS_INSTALL_DOCKER}" = "true" ];then
@@ -195,10 +217,6 @@ while [ ${#} -gt 0 ]; do
 		--mysql)
 			# 指定安装mysql
 			IS_INSTALL_MYSQL="true"
-			;;
-		--mysql8)
-			# 安装mysql8
-			IS_INSTALL_MYSQL8="true"
 			;;
 		--docker-mysql)
 			# 指定安装docker版本的mysql
