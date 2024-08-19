@@ -187,6 +187,16 @@ Install_Maven(){
 }
 
 Compile_Source(){
+	
+	if [ ! -f "/usr/bin/java" ];then
+		echo "检测到不存在java环境,开始安装"
+		Install_OpenJDK8
+	fi
+
+	if [ ! -f "/usr/bin/mvn" ];then
+		echo "检测到不存在maven环境,开始安装"
+		Install_Maven
+	fi
 
 	zip_name=$(basename $1 .zip)
 	rm -rf ${zip_name}
@@ -194,6 +204,13 @@ Compile_Source(){
 	# 解压源码到当前目录
 	unzip -qn $1 -d ${zip_name}
 
+	# 处理依赖
+	dependency_dir=$(find ${zip_name} -name "dependency")
+	for file in ${dependency_dir}/*.zip; do
+		[ -e "${file}" ] || continue
+
+		echo ${file}
+	done
 }
 
 Install_Main(){
