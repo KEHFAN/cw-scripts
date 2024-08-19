@@ -250,6 +250,11 @@ EOF
 
 	# 执行编译后端源码
 	mvn -f ${dependency_dir}/../pom.xml -s ${dependency_dir}/../settings.xml clean package -DskipTests
+
+	# 拷贝产物
+	cp ${dependency_dir}/../target/*.jar .
+
+	echo "===============编译完成，在当前目录执行ls查看jar包==================="
 }
 
 Install_Main(){
