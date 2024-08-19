@@ -186,6 +186,16 @@ Install_Maven(){
 	fi
 }
 
+Compile_Source(){
+
+	zip_name=$(basename $1 .zip)
+	rm -rf zip_name
+	mkdir zip_name
+	# 解压源码到当前目录
+	unzip -qn $1 -d zip_name
+
+}
+
 Install_Main(){
 	Get_Sys_Info
 	Get_Pack_Manager
@@ -214,6 +224,10 @@ Install_Main(){
 	# echo "IS_INSTALL_DOCKER=${IS_INSTALL_DOCKER}"
 	if [ "${IS_INSTALL_DOCKER}" = "true" ];then
 		Install_Docker
+	fi
+
+	if [ "${IS_COMPILE}" = "true" ];then
+		Compile_Source ${SOURCE_ZIP}
 	fi
 
 }
@@ -259,6 +273,9 @@ while [ ${#} -gt 0 ]; do
 		-c|--compile)
 			# 支持编译源码包 
 			# 包括前端、后端、前置包含环境检测，并安装所需环境
+			SOURCE_ZIP=$2
+			IS_COMPILE="true"
+			shift 1
 			;;
 	esac
 	# 左移列表参数
